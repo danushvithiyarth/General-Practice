@@ -15,7 +15,7 @@ pipeline {
         }
         stage("npm test") {
             steps {
-                sh 'npm test'
+                sh 'npm test -- --coverage'
             }
         }
         stage('SonarQube-analysis') { 
