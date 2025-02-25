@@ -12,23 +12,26 @@ pipeline {
         }
 
         stage("Dependency Check") {
-            steps {
-                parallel (
-                    "NPM Dependency Check" : {
+            parallel {
+                stage("NPM Dependency Check") {
+                    steps {
                         sh '''
                             npm audit --audit-level=high
                             echo $?
                         '''
-                    },
-                    "OWASP Dependency Check" : {
-                        sh '''
-                            dependencyCheck --scan ./ \
-                                --format ALL \
-                                --prettyPrint \
-                                --nvdApiKey e3b86212-bcc1-4222-9fe5-77bb48ab44ff
-                        '''
                     }
-                )
+                }
+
+                stage("OWASP Dependency Check") {
+                    steps {
+                        dependencyCheck additionalArguments: '''
+                            --scan ./ \
+                            --format ALL \
+                            --prettyPrint \
+                            --nvdApiKey e3b86212-bcc1-4222-9fe5-77bb48ab44ff
+                        ''', odcInstallation: 'OWASP-10.0.0'
+                    }
+                }
             }
         }
     }
