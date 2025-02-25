@@ -12,7 +12,8 @@ pipeline {
         }
         stage("NPM Dependancy check") {
             steps {
-                sh 'npm install --no-audit'
+                sh 'npm audit'
+                sh 'echo $?'
             }
         }
         
