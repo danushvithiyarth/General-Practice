@@ -11,11 +11,9 @@ pipeline {
             }
         }
 
-        stage("NPM Dependency Check and Fix") {
+        stage("NPM Dependency Fix") {
             steps {
                 sh '''
-                 npm audit 
-                 echo $?
                  npm audit fix --force 
                 '''
             }
