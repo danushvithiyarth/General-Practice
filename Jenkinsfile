@@ -7,9 +7,12 @@ pipeline {
     stages {
         stage("Install Dependency") {
             steps {
-                dir('coit-frontend/') {
-                    sh 'npm install --no-audit'
-                }
+                sh 'npm install --no-audit'
+            }
+        }
+        stage("NPM Dependancy check") {
+            steps {
+                sh 'npm install --no-audit'
             }
         }
         
