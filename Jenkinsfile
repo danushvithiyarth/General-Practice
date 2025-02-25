@@ -11,31 +11,30 @@ pipeline {
             }
         }
 
-        parallel {
-            stage("NPM Dependency Check") {
-                steps {
-                    sh '''
-                        npm audit --audit-level=high
-                        echo $?
-                    '''
+        stage("Dependency Check") {
+            parallel {
+                stage("NPM Dependency Check") {
+                    steps {
+                        sh '''
+                            npm audit --audit-level=high
+                            echo $?
+                        '''
+                    }
                 }
-            }
 
-            stage("OWASP Dependency Check") {
-                steps {
-                    sh '''
-                        dependencyCheck additionalArguments: '''
-                          --scan ./ \
-                          --format ALL \
-                          --prettyPrint
-                        ''', odcInstallation: 'OWASP-10.0.0'
-                    '''
+                stage("OWASP Dependency Check") {
+                    steps {
+                        dependencyCheck additionalArguments: '''--scan ./ \
+                            --format ALL \
+                            --prettyPrint''', 
+                            odcInstallation: 'OWASP-10.0.0'
+                    }
                 }
             }
         }
     }
 }
-        
+     
         
         //stage("SonarQube Analysis") {
           //  steps {
