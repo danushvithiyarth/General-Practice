@@ -7,11 +7,10 @@ pipeline {
     stages {
         stage("Install Dependency") {
             steps {
-                dir('coit-frontend/') {
-                    sh 'node -v'
-                    sh 'npm -v'
-                    sh 'npm install --no-audit'
-                }
+                sh 'node -v'
+                sh 'npm -v'
+                sh 'npm install --no-audit'
+            
             }
         }
     }
