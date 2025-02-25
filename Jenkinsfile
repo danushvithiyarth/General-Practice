@@ -25,8 +25,9 @@ pipeline {
                 stage("OWASP Dependency Check") {
                     steps {
                         dependencyCheck additionalArguments: '''--scan ./ \
-                            --format ALL \
-                            --prettyPrint''', 
+                            --format ALL \  
+                            --prettyPrint \
+                            --nvdApiKey e3b86212-bcc1-4222-9fe5-77bb48ab44ff''', 
                             odcInstallation: 'OWASP-10.0.0'
                     }
                 }
