@@ -3,6 +3,9 @@ pipeline {
     tools {
         nodejs 'npm-23.8.0'
     }
+    environment{
+        SCANNER_HOME = tool 'sonar-scanner'
+    }
 
     stages {
         stage("Install Dependency") {
@@ -10,21 +13,20 @@ pipeline {
                 sh 'npm install --no-audit'
             }
         }
-
-        stage("NPM Dependency Fix") {
+        stage('SonarQube-analysis') { 
             steps {
-                sh '''
-                 npm audit fix --force 
-                '''
-            }
-        }
-        stage("NPM Dependency check") {
-            steps {
-                sh '''
-                 npm audit 
-                 echo $?
-                '''
-            }
+                script {
+                    echo "Sonar scanner"
+                    withSonarQubeEnv('sonar-server') {
+                    sh '''
+                      ${SCANNER_HOME}/bin/sonar-scanner \
+                      -Dsonar.projectKey=testkey \
+                      -Dsonar.projectName=test-app \
+                      -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                     '''
+                    }     
+                }
+           }
         }
     }
 }
