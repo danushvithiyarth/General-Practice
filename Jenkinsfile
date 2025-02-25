@@ -13,6 +13,11 @@ pipeline {
                 sh 'npm install --no-audit'
             }
         }
+        stage("npm test") {
+            steps {
+                sh 'npm test'
+            }
+        }
         stage('SonarQube-analysis') { 
             steps {
                 script {
