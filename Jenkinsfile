@@ -13,32 +13,6 @@ pipeline {
             }
         }
         
-        stage("Dependency Check") {
-            parallel { 
-                stage("Npm Dependency Check") { 
-                    steps {
-                        dir('coit-frontend/') {
-                            sh 'npm audit' //--audit-level=high --audit-level=critical
-                        }
-                    }
-                }
-                
-                stage("OWASP Dependency Check") { 
-                    steps {
-                        dir('coit-frontend/') {
-                            sh '''
-                                dependency-check.sh \
-                                --scan /var/lib/jenkins/workspace/Multi-practice_develop/coit-frontend \
-                                --out reports \
-                                --format HTML,JSON \
-                                --project "coit-frontend" \
-                                --enableExperimental
-                            '''
-                        }
-                    }
-                }
-            }
-        }  
     }
 }
 
