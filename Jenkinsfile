@@ -3,23 +3,38 @@ pipeline {
     tools {
         nodejs 'npm-23.8.0'
     }
-    
+
     stages {
         stage("Install Dependency") {
             steps {
                 sh 'npm install --no-audit'
             }
         }
-        stage("NPM Dependancy check") {
-            steps {
-                sh 'npm audit'
-                sh 'echo $?'
+
+        parallel {
+            stage("NPM Dependency Check") {
+                steps {
+                    sh '''
+                        npm audit --audit-level=high
+                        echo $?
+                    '''
+                }
+            }
+
+            stage("OWASP Dependency Check") {
+                steps {
+                    sh '''
+                        dependencyCheck additionalArguments: '''
+                          --scan ./ \
+                          --format ALL \
+                          --prettyPrint
+                        ''', odcInstallation: 'OWASP-10.0.0'
+                    '''
+                }
             }
         }
-        
     }
 }
-
         
         
         //stage("SonarQube Analysis") {
