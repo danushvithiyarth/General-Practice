@@ -8,7 +8,7 @@ pipeline {
         stage("Install Dependency") {
             steps {
                 dir('coit-frontend/') {
-                    sh 'nodejs -v'
+                    sh 'node -v'
                     sh 'npm -v'
                     sh 'npm install --no-audit'
                 }
